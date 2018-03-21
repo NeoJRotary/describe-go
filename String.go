@@ -17,6 +17,16 @@ func (s *TypeString) Get() string {
 	return s.Obj
 }
 
+// HasPrefix wrapper of strings.HasPrefix()
+func (s *TypeString) HasPrefix(prefix string) bool {
+	return strings.HasPrefix(s.Obj, prefix)
+}
+
+// HasSuffix wrapper of strings.HasSuffix()
+func (s *TypeString) HasSuffix(suffix string) bool {
+	return strings.HasSuffix(s.Obj, suffix)
+}
+
 // Replace wrapper of strings.Replace()
 func (s *TypeString) Replace(old string, new string, n int) *TypeString {
 	return String(strings.Replace(s.Obj, old, new, n))

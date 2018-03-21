@@ -13,12 +13,52 @@ func StringSlice(obj []string) *TypeStringSlice {
 	return &TypeStringSlice{Obj: obj}
 }
 
-// Get return object []string
+// Get return object slice
 func (ss *TypeStringSlice) Get() []string {
 	return ss.Obj
 }
 
-// Same whether it is totally same as target []string
+// Len return len(slice)
+func (ss *TypeStringSlice) Len() int {
+	return len(ss.Obj)
+}
+
+// Empty is empty slice or not
+func (ss *TypeStringSlice) Empty() bool {
+	return len(ss.Obj) == 0
+}
+
+// From return slice[i:], if out of range return empty slice
+func (ss *TypeStringSlice) From(i int) *TypeStringSlice {
+	if i > ss.Len() {
+		i = ss.Len()
+	}
+	return StringSlice(ss.Obj[i:])
+}
+
+// To return slice[:i], if out of range return slice[:last]
+func (ss *TypeStringSlice) To(i int) *TypeStringSlice {
+	if i > ss.Len() {
+		i = ss.Len()
+	}
+	return StringSlice(ss.Obj[:i])
+}
+
+// Range return slice[i:j], panic when out of range or i > j
+func (ss *TypeStringSlice) Range(i int, j int) *TypeStringSlice {
+	if i > j {
+		panic(ErrSliceRangeIndexInvalid)
+	}
+	if i > ss.Len() {
+		panic(ErrSliceOutOfRange)
+	}
+	if j > ss.Len() {
+		panic(ErrSliceOutOfRange)
+	}
+	return StringSlice(ss.Obj[i:j])
+}
+
+// Same whether it is totally same as target slice
 func (ss *TypeStringSlice) Same(target []string) bool {
 	if len(ss.Obj) != len(target) {
 		return false
@@ -31,7 +71,7 @@ func (ss *TypeStringSlice) Same(target []string) bool {
 	return true
 }
 
-// Has whether it has element (string)
+// Has whether it has element
 func (ss *TypeStringSlice) Has(elm string) bool {
 	for _, v := range ss.Obj {
 		if v == elm {
@@ -41,7 +81,7 @@ func (ss *TypeStringSlice) Has(elm string) bool {
 	return false
 }
 
-// Trim remove target element (string) from both sides of []slice
+// Trim remove target element from both sides of slice
 func (ss *TypeStringSlice) Trim(elm string) *TypeStringSlice {
 	var start, end int
 	for start = 0; start < len(ss.Obj); start++ {
@@ -57,7 +97,45 @@ func (ss *TypeStringSlice) Trim(elm string) *TypeStringSlice {
 	return StringSlice(ss.Obj[start : end+1])
 }
 
-// TrimSpace remove empty string from both sides of []slice
+// TrimSpace remove empty string from both sides of slice
 func (ss *TypeStringSlice) TrimSpace() *TypeStringSlice {
 	return ss.Trim("")
+}
+
+// Index return element of slice at position in describe.Type. Panic if slice is empty or out of range.
+func (ss *TypeStringSlice) Index(i int) *TypeString {
+	if ss.Empty() {
+		panic(ErrSliceIsEmpty)
+	}
+	if i >= len(ss.Obj) {
+		panic(ErrSliceOutOfRange)
+	}
+	return String(ss.Obj[i])
+}
+
+// First return first element of slice in describe.Type. Panic if slice is empty.
+func (ss *TypeStringSlice) First() *TypeString {
+	if ss.Empty() {
+		panic(ErrSliceIsEmpty)
+	}
+	return String(ss.Obj[0])
+}
+
+// Last return last element of slice in describe.Type. Panic if slice is empty.
+func (ss *TypeStringSlice) Last() *TypeString {
+	if ss.Empty() {
+		panic(ErrSliceIsEmpty)
+	}
+	return String(ss.Obj[len(ss.Obj)-1])
+}
+
+// Find find first element in describe.Type when func passed. Return nil if not found.
+func (ss *TypeStringSlice) Find(f func(*TypeString) bool) *TypeString {
+	for _, v := range ss.Obj {
+		sv := String(v)
+		if f(sv) {
+			return sv
+		}
+	}
+	return nil
 }

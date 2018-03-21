@@ -27,6 +27,11 @@ func (e *TypeError) Msg() string {
 	return e.Obj.Error()
 }
 
+// ToString return object error message to TypeString
+func (e *TypeError) ToString() *TypeString {
+	return String(e.Obj.Error())
+}
+
 // Is whether object is an error
 func (e *TypeError) Is() bool {
 	return e.Obj != nil
