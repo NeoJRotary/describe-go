@@ -18,6 +18,17 @@ func (ss *TypeStringSlice) Copy() *TypeStringSlice {
 	return &TypeStringSlice{Obj: ss.Obj}
 }
 
+// ElmAt return element of slice at position in describe.Type. Panic if slice is empty or out of range.
+func (ss *TypeStringSlice) ElmAt(i int) *TypeString {
+	if ss.Empty() {
+		panic(ErrSliceIsEmpty)
+	}
+	if i >= len(ss.Obj) {
+		panic(ErrSliceOutOfRange)
+	}
+	return String(ss.Obj[i]).IndexAt(i)
+}
+
 // Get return object slice
 func (ss *TypeStringSlice) Get() []string {
 	return ss.Obj
@@ -107,17 +118,6 @@ func (ss *TypeStringSlice) TrimSpace() *TypeStringSlice {
 	return ss.Trim("")
 }
 
-// Index return element of slice at position in describe.Type. Panic if slice is empty or out of range.
-func (ss *TypeStringSlice) Index(i int) *TypeString {
-	if ss.Empty() {
-		panic(ErrSliceIsEmpty)
-	}
-	if i >= len(ss.Obj) {
-		panic(ErrSliceOutOfRange)
-	}
-	return String(ss.Obj[i])
-}
-
 // First return first element of slice in describe.Type. Panic if slice is empty.
 func (ss *TypeStringSlice) First() *TypeString {
 	if ss.Empty() {
@@ -169,7 +169,7 @@ func (ss *TypeStringSlice) Last() *TypeString {
 
 // Replace replace element at position of slice. Panic if index is invalid.
 func (ss *TypeStringSlice) Replace(i int, s string) *TypeStringSlice {
-	ss.Index(i)
+	ss.ElmAt(i)
 	cp := ss.Copy()
 	cp.Obj[i] = s
 	return cp
