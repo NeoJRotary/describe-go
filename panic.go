@@ -7,4 +7,6 @@ const (
 	ErrSliceIsEmpty = "slice is empty"
 	// ErrSliceRangeIndexInvalid slice range index error : i > j
 	ErrSliceRangeIndexInvalid = "slice range index error : i > j"
+	// ErrInvalidIndex invalid index < 0
+	ErrInvalidIndex = "invalid index < 0"
 )

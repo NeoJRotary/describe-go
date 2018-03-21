@@ -4,12 +4,13 @@ import "strings"
 
 // TypeString string function collections struct
 type TypeString struct {
-	Obj string
+	Obj   string
+	Index int
 }
 
 // String get *TypeString
 func String(obj string) *TypeString {
-	return &TypeString{Obj: obj}
+	return &TypeString{Obj: obj, Index: -1}
 }
 
 // Get return object string
@@ -35,6 +36,20 @@ func (s *TypeString) Replace(old string, new string, n int) *TypeString {
 // ReplaceAll wrapper of strings.Replace(), set n = -1
 func (s *TypeString) ReplaceAll(old string, new string) *TypeString {
 	return String(strings.Replace(s.Obj, old, new, -1))
+}
+
+// ReplaceTo replace element to target slice by index. Panic if element doesn't have index.
+func (s *TypeString) ReplaceTo(ss *TypeStringSlice) *TypeStringSlice {
+	return ss.Replace(s.Index, s.Obj)
+}
+
+// IndexAt set index of slice. Panic if index < 0
+func (s *TypeString) IndexAt(i int) *TypeString {
+	if i < 0 {
+		panic(ErrInvalidIndex)
+	}
+	s.Index = i
+	return s
 }
 
 // Split wrapper of strings.Split()

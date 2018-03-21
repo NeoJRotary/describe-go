@@ -13,6 +13,11 @@ func StringSlice(obj []string) *TypeStringSlice {
 	return &TypeStringSlice{Obj: obj}
 }
 
+// Copy get copy of type
+func (ss *TypeStringSlice) Copy() *TypeStringSlice {
+	return &TypeStringSlice{Obj: ss.Obj}
+}
+
 // Get return object slice
 func (ss *TypeStringSlice) Get() []string {
 	return ss.Obj
@@ -121,14 +126,6 @@ func (ss *TypeStringSlice) First() *TypeString {
 	return String(ss.Obj[0])
 }
 
-// Last return last element of slice in describe.Type. Panic if slice is empty.
-func (ss *TypeStringSlice) Last() *TypeString {
-	if ss.Empty() {
-		panic(ErrSliceIsEmpty)
-	}
-	return String(ss.Obj[len(ss.Obj)-1])
-}
-
 // Find find first element in describe.Type when func passed. Return nil if not found.
 func (ss *TypeStringSlice) Find(f func(*TypeString) bool) *TypeString {
 	for _, v := range ss.Obj {
@@ -138,4 +135,42 @@ func (ss *TypeStringSlice) Find(f func(*TypeString) bool) *TypeString {
 		}
 	}
 	return nil
+}
+
+// FindHasPrefix find first string has prefix. Return nil if not found.
+func (ss *TypeStringSlice) FindHasPrefix(prefix string) *TypeString {
+	for _, v := range ss.Obj {
+		sv := String(v)
+		if sv.HasPrefix(prefix) {
+			return sv
+		}
+	}
+	return nil
+}
+
+// FindHasSuffix find first string has prefix. Return nil if not found.
+func (ss *TypeStringSlice) FindHasSuffix(suffix string) *TypeString {
+	for _, v := range ss.Obj {
+		sv := String(v)
+		if sv.HasSuffix(suffix) {
+			return sv
+		}
+	}
+	return nil
+}
+
+// Last return last element of slice in describe.Type. Panic if slice is empty.
+func (ss *TypeStringSlice) Last() *TypeString {
+	if ss.Empty() {
+		panic(ErrSliceIsEmpty)
+	}
+	return String(ss.Obj[len(ss.Obj)-1])
+}
+
+// Replace replace element at position of slice. Panic if index is invalid.
+func (ss *TypeStringSlice) Replace(i int, s string) *TypeStringSlice {
+	ss.Index(i)
+	cp := ss.Copy()
+	cp.Obj[i] = s
+	return cp
 }

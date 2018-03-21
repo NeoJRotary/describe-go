@@ -44,6 +44,11 @@ func GetENV(name string, defaultVal string) string {
 	return v
 }
 
+// Found check Slice.Find() return valid element or not
+func Found(elm interface{}) bool {
+	return elm != nil
+}
+
 // NotFound check Slice.Find() return valid element or not
 func NotFound(elm interface{}) bool {
 	return elm == nil
