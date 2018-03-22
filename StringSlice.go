@@ -97,6 +97,11 @@ func (ss *TypeStringSlice) Has(elm string) bool {
 	return false
 }
 
+// NotHas whether it has element
+func (ss *TypeStringSlice) NotHas(elm string) bool {
+	return !ss.Has(elm)
+}
+
 // Trim remove target element from both sides of slice
 func (ss *TypeStringSlice) Trim(elm string) *TypeStringSlice {
 	var start, end int
