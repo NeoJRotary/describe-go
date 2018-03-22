@@ -46,12 +46,12 @@ func (s *TypeString) HasSuffix(suffix string) bool {
 
 // Replace wrapper of strings.Replace()
 func (s *TypeString) Replace(old string, new string, n int) *TypeString {
-	return s.Update(strings.Replace(s.Obj, old, new, n))
+	return s.Copy().Update(strings.Replace(s.Obj, old, new, n))
 }
 
 // ReplaceAll wrapper of strings.Replace(), set n = -1
 func (s *TypeString) ReplaceAll(old string, new string) *TypeString {
-	return s.Update(strings.Replace(s.Obj, old, new, -1))
+	return s.Copy().Update(strings.Replace(s.Obj, old, new, -1))
 }
 
 // SetInto set element into target slice by index. Panic if element doesn't have index.
@@ -83,13 +83,29 @@ func (s *TypeString) Split(sep string) *TypeStringSlice {
 	return StringSlice(strings.Split(s.Obj, sep))
 }
 
-// Trim wrapper of strings.Trim(). It accept multi string and it will trim from first to last.
-func (s *TypeString) Trim(cutset string, more ...string) *TypeString {
-	str := strings.Trim(s.Obj, cutset)
-	for _, m := range more {
-		str = strings.Trim(str, m)
-	}
-	return s.Copy().Update(str)
+// Trim wrapper of strings.Trim()
+func (s *TypeString) Trim(cutset string) *TypeString {
+	return s.Copy().Update(strings.Trim(s.Obj, cutset))
+}
+
+// TrimLeft wrapper of strings.TrimLeft()
+func (s *TypeString) TrimLeft(cutset string) *TypeString {
+	return s.Copy().Update(strings.TrimLeft(s.Obj, cutset))
+}
+
+// TrimRight wrapper of strings.TrimRight()
+func (s *TypeString) TrimRight(cutset string) *TypeString {
+	return s.Copy().Update(strings.TrimRight(s.Obj, cutset))
+}
+
+// TrimPrefix wrapper of strings.TrimPrefix()
+func (s *TypeString) TrimPrefix(prefix string) *TypeString {
+	return s.Copy().Update(strings.TrimPrefix(s.Obj, prefix))
+}
+
+// TrimSuffix wrapper of strings.TrimSuffix()
+func (s *TypeString) TrimSuffix(suffix string) *TypeString {
+	return s.Copy().Update(strings.TrimSuffix(s.Obj, suffix))
 }
 
 // TrimSpace wrapper of strings.TrimSpace()
