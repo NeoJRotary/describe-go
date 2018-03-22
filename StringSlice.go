@@ -167,8 +167,8 @@ func (ss *TypeStringSlice) Last() *TypeString {
 	return String(ss.Obj[len(ss.Obj)-1])
 }
 
-// Replace replace element at position of slice. Panic if index is invalid.
-func (ss *TypeStringSlice) Replace(i int, s string) *TypeStringSlice {
+// Set set element at position of slice. Panic if index is invalid.
+func (ss *TypeStringSlice) Set(i int, s string) *TypeStringSlice {
 	ss.ElmAt(i)
 	cp := ss.Copy()
 	cp.Obj[i] = s

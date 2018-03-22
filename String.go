@@ -49,9 +49,9 @@ func (s *TypeString) ReplaceAll(old string, new string) *TypeString {
 	return s.Update(strings.Replace(s.Obj, old, new, -1))
 }
 
-// ReplaceTo replace element to target slice by index. Panic if element doesn't have index.
-func (s *TypeString) ReplaceTo(ss *TypeStringSlice) *TypeStringSlice {
-	return ss.Replace(s.Index, s.Obj)
+// SetInto set element into target slice by index. Panic if element doesn't have index.
+func (s *TypeString) SetInto(ss *TypeStringSlice) *TypeStringSlice {
+	return ss.Set(s.Index, s.Obj)
 }
 
 // IndexAt set index of slice. Panic if index < 0
