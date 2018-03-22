@@ -83,14 +83,18 @@ func (s *TypeString) Split(sep string) *TypeStringSlice {
 	return StringSlice(strings.Split(s.Obj, sep))
 }
 
-// Trim wrapper of strings.Trim()
-func (s *TypeString) Trim(cutset string) *TypeString {
-	return s.Update(strings.Trim(s.Obj, cutset))
+// Trim wrapper of strings.Trim(). It accept multi string and it will trim from first to last.
+func (s *TypeString) Trim(cutset string, more ...string) *TypeString {
+	str := strings.Trim(s.Obj, cutset)
+	for _, m := range more {
+		str = strings.Trim(str, m)
+	}
+	return s.Copy().Update(str)
 }
 
 // TrimSpace wrapper of strings.TrimSpace()
 func (s *TypeString) TrimSpace() *TypeString {
-	return s.Update(strings.TrimSpace(s.Obj))
+	return s.Copy().Update(strings.TrimSpace(s.Obj))
 }
 
 // Empty is empty string
@@ -98,7 +102,7 @@ func (s *TypeString) Empty() bool {
 	return s.Obj == ""
 }
 
-// Range get part of object from index i to j. Panic when invalid index or out of range.
+// Range get part of object from index i to j (exclude j). Panic when invalid index or out of range.
 func (s *TypeString) Range(i int, j int) *TypeString {
 	if i < 0 || j < 0 || i > j {
 		PanicErr(ErrInvalidIndex)
@@ -109,7 +113,7 @@ func (s *TypeString) Range(i int, j int) *TypeString {
 	if j > s.Len() {
 		PanicErr(ErrOutOfRange)
 	}
-	return String(s.Obj[i:j]).SetSliceIndex(s.SliceIndex)
+	return s.Copy().Update(s.Obj[i:j])
 }
 
 // RangeBetween get part of object by given first and last element. Return empty element if not found.
@@ -118,9 +122,10 @@ func (s *TypeString) RangeBetween(a, b string) *TypeString {
 	if i == -1 {
 		return String("")
 	}
+	i += len(a)
 	j := s.LastIndex(b)
 	if j == -1 {
 		return String("")
 	}
-	return s.Range(i, j).SetSliceIndex(s.SliceIndex)
+	return s.Range(i, j)
 }

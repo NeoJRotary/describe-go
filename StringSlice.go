@@ -31,6 +31,24 @@ func (ss *TypeStringSlice) ElmAt(i int) *TypeString {
 	return String(ss.Obj[i]).SetSliceIndex(i)
 }
 
+// ElmTrim trim all element in slice
+func (ss *TypeStringSlice) ElmTrim(cutset string, more ...string) *TypeStringSlice {
+	result := ss.Copy()
+	for i, elm := range result.Obj {
+		result.Obj[i] = String(elm).Trim(cutset, more...).Get()
+	}
+	return result
+}
+
+// ElmTrimSpace trim space all element in slice
+func (ss *TypeStringSlice) ElmTrimSpace() *TypeStringSlice {
+	result := ss.Copy()
+	for i, elm := range result.Obj {
+		result.Obj[i] = String(elm).TrimSpace().Get()
+	}
+	return result
+}
+
 // Get return object slice
 func (ss *TypeStringSlice) Get() []string {
 	return ss.Obj
@@ -39,6 +57,21 @@ func (ss *TypeStringSlice) Get() []string {
 // Len return len(slice)
 func (ss *TypeStringSlice) Len() int {
 	return len(ss.Obj)
+}
+
+// Push push new elements into slice
+func (ss *TypeStringSlice) Push(elm string, more ...string) *TypeStringSlice {
+	newSS := append([]string{}, ss.Obj...)
+	newSS = append(newSS, elm)
+	newSS = append(newSS, more...)
+	return StringSlice(newSS)
+}
+
+// Shift shift elements into slice
+func (ss *TypeStringSlice) Shift(elm string, more ...string) *TypeStringSlice {
+	newSS := append([]string{elm}, more...)
+	newSS = append(newSS, ss.Obj...)
+	return StringSlice(newSS)
 }
 
 // Empty is empty slice or not
@@ -176,7 +209,6 @@ func (ss *TypeStringSlice) Last() *TypeString {
 
 // Set set element at position of slice. Panic if index is invalid.
 func (ss *TypeStringSlice) Set(i int, s string) *TypeStringSlice {
-	ss.ElmAt(i)
 	cp := ss.Copy()
 	cp.Obj[i] = s
 	return cp
