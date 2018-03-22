@@ -1,5 +1,7 @@
 package describe
 
+import "strings"
+
 // TypeStringSlice []string function collections struct
 type TypeStringSlice struct {
 	Obj []string
@@ -178,4 +180,9 @@ func (ss *TypeStringSlice) Set(i int, s string) *TypeStringSlice {
 	cp := ss.Copy()
 	cp.Obj[i] = s
 	return cp
+}
+
+// Join join slice. retrun TypeString
+func (ss *TypeStringSlice) Join(sep string) *TypeString {
+	return String(strings.Join(ss.Obj, sep))
 }
