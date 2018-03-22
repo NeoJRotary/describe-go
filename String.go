@@ -29,6 +29,11 @@ func (s *TypeString) Get() string {
 	return s.Obj
 }
 
+// Len length of string
+func (s *TypeString) Len() int {
+	return len(s.Obj)
+}
+
 // HasPrefix wrapper of strings.HasPrefix()
 func (s *TypeString) HasPrefix(prefix string) bool {
 	return strings.HasPrefix(s.Obj, prefix)
@@ -54,18 +59,23 @@ func (s *TypeString) SetInto(ss *TypeStringSlice) *TypeStringSlice {
 	return ss.Set(s.SliceIndex, s.Obj)
 }
 
-// SetSliceIndex set index of slice on TypeString. Panic if index < 0
+// SetSliceIndex set index of slice on TypeString. Panic when invalid index
 func (s *TypeString) SetSliceIndex(i int) *TypeString {
 	if i < 0 {
-		panic(ErrInvalidIndex)
+		PanicErr(ErrInvalidIndex)
 	}
 	s.SliceIndex = i
 	return s
 }
 
-// Index find substr position in object. Retrun -1 if not found.
+// Index find fisrt substr position in object. Retrun -1 if not found.
 func (s *TypeString) Index(substr string) int {
 	return strings.Index(s.Obj, substr)
+}
+
+// LastIndex find last substr position in object. Retrun -1 if not found.
+func (s *TypeString) LastIndex(substr string) int {
+	return strings.LastIndex(s.Obj, substr)
 }
 
 // Split wrapper of strings.Split()
@@ -81,4 +91,36 @@ func (s *TypeString) Trim(cutset string) *TypeString {
 // TrimSpace wrapper of strings.TrimSpace()
 func (s *TypeString) TrimSpace() *TypeString {
 	return s.Update(strings.TrimSpace(s.Obj))
+}
+
+// Empty is empty string
+func (s *TypeString) Empty() bool {
+	return s.Obj == ""
+}
+
+// Range get part of object from index i to j. Panic when invalid index or out of range.
+func (s *TypeString) Range(i int, j int) *TypeString {
+	if i < 0 || j < 0 || i > j {
+		PanicErr(ErrInvalidIndex)
+	}
+	if i > s.Len() {
+		PanicErr(ErrOutOfRange)
+	}
+	if j > s.Len() {
+		PanicErr(ErrOutOfRange)
+	}
+	return String(s.Obj[i:j]).SetSliceIndex(s.SliceIndex)
+}
+
+// RangeBetween get part of object by given first and last element. Return empty element if not found.
+func (s *TypeString) RangeBetween(a, b string) *TypeString {
+	i := s.Index(a)
+	if i == -1 {
+		return String("")
+	}
+	j := s.LastIndex(b)
+	if j == -1 {
+		return String("")
+	}
+	return s.Range(i, j).SetSliceIndex(s.SliceIndex)
 }

@@ -23,10 +23,10 @@ func (ss *TypeStringSlice) Copy() *TypeStringSlice {
 // ElmAt return element of slice at position in describe.Type. Panic if slice is empty or out of range.
 func (ss *TypeStringSlice) ElmAt(i int) *TypeString {
 	if ss.Empty() {
-		panic(ErrSliceIsEmpty)
+		PanicErr(ErrSliceIsEmpty)
 	}
 	if i >= len(ss.Obj) {
-		panic(ErrSliceOutOfRange)
+		PanicErr(ErrOutOfRange)
 	}
 	return String(ss.Obj[i]).SetSliceIndex(i)
 }
@@ -64,14 +64,14 @@ func (ss *TypeStringSlice) To(i int) *TypeStringSlice {
 
 // Range return slice[i:j], panic when out of range or i > j
 func (ss *TypeStringSlice) Range(i int, j int) *TypeStringSlice {
-	if i > j {
-		panic(ErrSliceRangeIndexInvalid)
+	if i < 0 || j < 0 || i > j {
+		PanicErr(ErrRangeIndexInvalid)
 	}
 	if i > ss.Len() {
-		panic(ErrSliceOutOfRange)
+		PanicErr(ErrOutOfRange)
 	}
 	if j > ss.Len() {
-		panic(ErrSliceOutOfRange)
+		PanicErr(ErrOutOfRange)
 	}
 	return StringSlice(ss.Obj[i:j])
 }
@@ -128,7 +128,7 @@ func (ss *TypeStringSlice) TrimSpace() *TypeStringSlice {
 // First return first element of slice in describe.Type. Panic if slice is empty.
 func (ss *TypeStringSlice) First() *TypeString {
 	if ss.Empty() {
-		panic(ErrSliceIsEmpty)
+		PanicErr(ErrSliceIsEmpty)
 	}
 	return String(ss.Obj[0])
 }
@@ -169,7 +169,7 @@ func (ss *TypeStringSlice) FindHasSuffix(suffix string) *TypeString {
 // Last return last element of slice in describe.Type. Panic if slice is empty.
 func (ss *TypeStringSlice) Last() *TypeString {
 	if ss.Empty() {
-		panic(ErrSliceIsEmpty)
+		PanicErr(ErrSliceIsEmpty)
 	}
 	return String(ss.Obj[len(ss.Obj)-1])
 }
