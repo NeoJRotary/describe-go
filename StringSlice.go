@@ -32,10 +32,46 @@ func (ss *TypeStringSlice) ElmAt(i int) *TypeString {
 }
 
 // ElmTrim trim all element in slice
-func (ss *TypeStringSlice) ElmTrim(cutset string, more ...string) *TypeStringSlice {
+func (ss *TypeStringSlice) ElmTrim(cutset string) *TypeStringSlice {
 	result := ss.Copy()
 	for i, elm := range result.Obj {
-		result.Obj[i] = String(elm).Trim(cutset, more...).Get()
+		result.Obj[i] = String(elm).Trim(cutset).Get()
+	}
+	return result
+}
+
+// ElmTrimLeft trim all element in slice
+func (ss *TypeStringSlice) ElmTrimLeft(cutset string) *TypeStringSlice {
+	result := ss.Copy()
+	for i, elm := range result.Obj {
+		result.Obj[i] = String(elm).TrimLeft(cutset).Get()
+	}
+	return result
+}
+
+// ElmTrimRight trim all element in slice
+func (ss *TypeStringSlice) ElmTrimRight(cutset string) *TypeStringSlice {
+	result := ss.Copy()
+	for i, elm := range result.Obj {
+		result.Obj[i] = String(elm).TrimRight(cutset).Get()
+	}
+	return result
+}
+
+// ElmTrimPrefix trim all element in slice
+func (ss *TypeStringSlice) ElmTrimPrefix(prefix string) *TypeStringSlice {
+	result := ss.Copy()
+	for i, elm := range result.Obj {
+		result.Obj[i] = String(elm).TrimPrefix(prefix).Get()
+	}
+	return result
+}
+
+// ElmTrimSuffix trim all element in slice
+func (ss *TypeStringSlice) ElmTrimSuffix(suffix string) *TypeStringSlice {
+	result := ss.Copy()
+	for i, elm := range result.Obj {
+		result.Obj[i] = String(elm).TrimSuffix(suffix).Get()
 	}
 	return result
 }
