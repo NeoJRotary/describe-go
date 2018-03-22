@@ -4,18 +4,18 @@ import "strings"
 
 // TypeString string function collections struct
 type TypeString struct {
-	Obj   string
-	Index int
+	Obj        string
+	SliceIndex int
 }
 
 // String get *TypeString
 func String(obj string) *TypeString {
-	return &TypeString{Obj: obj, Index: -1}
+	return &TypeString{Obj: obj, SliceIndex: -1}
 }
 
 // Copy get copy of type
 func (s *TypeString) Copy() *TypeString {
-	return &TypeString{Obj: s.Obj, Index: s.Index}
+	return &TypeString{Obj: s.Obj, SliceIndex: s.SliceIndex}
 }
 
 // Update update object
@@ -51,16 +51,21 @@ func (s *TypeString) ReplaceAll(old string, new string) *TypeString {
 
 // SetInto set element into target slice by index. Panic if element doesn't have index.
 func (s *TypeString) SetInto(ss *TypeStringSlice) *TypeStringSlice {
-	return ss.Set(s.Index, s.Obj)
+	return ss.Set(s.SliceIndex, s.Obj)
 }
 
-// IndexAt set index of slice. Panic if index < 0
-func (s *TypeString) IndexAt(i int) *TypeString {
+// SetSliceIndex set index of slice on TypeString. Panic if index < 0
+func (s *TypeString) SetSliceIndex(i int) *TypeString {
 	if i < 0 {
 		panic(ErrInvalidIndex)
 	}
-	s.Index = i
+	s.SliceIndex = i
 	return s
+}
+
+// Index find substr position in object. Retrun -1 if not found.
+func (s *TypeString) Index(substr string) int {
+	return strings.Index(s.Obj, substr)
 }
 
 // Split wrapper of strings.Split()

@@ -28,7 +28,7 @@ func (ss *TypeStringSlice) ElmAt(i int) *TypeString {
 	if i >= len(ss.Obj) {
 		panic(ErrSliceOutOfRange)
 	}
-	return String(ss.Obj[i]).IndexAt(i)
+	return String(ss.Obj[i]).SetSliceIndex(i)
 }
 
 // Get return object slice
