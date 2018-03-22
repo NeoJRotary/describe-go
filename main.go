@@ -2,6 +2,7 @@ package describe
 
 import (
 	"errors"
+	"fmt"
 	"os"
 )
 
@@ -18,8 +19,8 @@ func CheckErr(e error) {
 }
 
 // NewErr return new error
-func NewErr(msg string) error {
-	return errors.New(msg)
+func NewErr(msg ...interface{}) error {
+	return errors.New(fmt.Sprint(msg))
 }
 
 // RecoverErr run function when recover an error, it will panic again if it is not error
