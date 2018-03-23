@@ -173,27 +173,6 @@ func (ss *TypeStringSlice) NotHas(elm string) bool {
 	return !ss.Has(elm)
 }
 
-// Trim remove target element from both sides of slice
-func (ss *TypeStringSlice) Trim(elm string) *TypeStringSlice {
-	var start, end int
-	for start = 0; start < len(ss.Obj); start++ {
-		if ss.Obj[start] != elm {
-			break
-		}
-	}
-	for end = len(ss.Obj) - 1; end >= 0; end-- {
-		if ss.Obj[end] != elm {
-			break
-		}
-	}
-	return StringSlice(ss.Obj[start : end+1])
-}
-
-// TrimSpace remove empty string from both sides of slice
-func (ss *TypeStringSlice) TrimSpace() *TypeStringSlice {
-	return ss.Trim("")
-}
-
 // First return first element of slice in describe.Type. Panic if slice is empty.
 func (ss *TypeStringSlice) First() *TypeString {
 	if ss.Empty() {

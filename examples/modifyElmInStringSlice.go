@@ -15,7 +15,7 @@ func main() {
 	*	develop
 		hotfix
 	`
-	list := D.String(cmdOutput).Split("\n").TrimSpace()
+	list := D.String(cmdOutput).Split("\n").ElmTrimSpace()
 	current := D.String(cmdOutput).Split("\n").FindHasPrefix("*").Trim("*").TrimSpace()
 	fmt.Println("Current Branch :", current.Get())
 	list = current.SetInto(list)
