@@ -145,3 +145,8 @@ func (s *TypeString) RangeBetween(a, b string) *TypeString {
 	}
 	return s.Range(i, j)
 }
+
+// WrapBy wrap string by wrapper
+func (s *TypeString) WrapBy(wrapper string) *TypeString {
+	return s.Copy().Update(wrapper + s.Obj + wrapper)
+}
