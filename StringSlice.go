@@ -17,7 +17,9 @@ func StringSlice(obj []string) *TypeStringSlice {
 
 // Copy get copy of type
 func (ss *TypeStringSlice) Copy() *TypeStringSlice {
-	return &TypeStringSlice{Obj: ss.Obj}
+	newSlice := make([]string, len(ss.Obj))
+	copy(newSlice, ss.Obj)
+	return &TypeStringSlice{Obj: newSlice}
 }
 
 // ElmAt return element of slice at position in describe.Type. Panic if slice is empty or out of range.
@@ -154,6 +156,27 @@ func (ss *TypeStringSlice) Range(i int, j int) *TypeStringSlice {
 	return StringSlice(ss.Obj[i:j])
 }
 
+// Trim remove target element from both sides of slice
+func (ss *TypeStringSlice) Trim(elm string) *TypeStringSlice {
+	var start, end int
+	for start = 0; start < len(ss.Obj); start++ {
+		if ss.Obj[start] != elm {
+			break
+		}
+	}
+	for end = len(ss.Obj) - 1; end >= 0; end-- {
+		if ss.Obj[end] != elm {
+			break
+		}
+	}
+	return StringSlice(ss.Obj[start : end+1])
+}
+
+// TrimSpace remove empty string from both sides of slice
+func (ss *TypeStringSlice) TrimSpace() *TypeStringSlice {
+	return ss.Trim("")
+}
+
 // Same whether it is totally same as target slice
 func (ss *TypeStringSlice) Same(target []string) bool {
 	if len(ss.Obj) != len(target) {
@@ -233,9 +256,11 @@ func (ss *TypeStringSlice) Last() *TypeString {
 
 // Set set element at position of slice. Panic if index is invalid.
 func (ss *TypeStringSlice) Set(i int, s string) *TypeStringSlice {
-	cp := ss.Copy()
-	cp.Obj[i] = s
-	return cp
+	// cp := ss.Copy()
+	// cp.Obj[i] = s
+	// return cp
+	ss.Obj[i] = s
+	return ss
 }
 
 // Join join slice. retrun TypeString
