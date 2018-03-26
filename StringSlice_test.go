@@ -97,3 +97,37 @@ func TestStringSliceElm(t *testing.T) {
 		t.Error("Get ", ss.Get(), ", should be ", b)
 	}
 }
+
+func TestStringPush(t *testing.T) {
+	a := []string{"2", "3"}
+	b := []string{"2", "3", "4", "5"}
+
+	ss := StringSlice(a)
+	ss.Push("4", "5")
+	if !ss.Same(b) {
+		t.Error("Get ", ss.Get(), ", should be ", b)
+	}
+
+	ss = StringSlice(a)
+	ss.Push("4").Push("5")
+	if !ss.Same(b) {
+		t.Error("Get ", ss.Get(), ", should be ", b)
+	}
+}
+
+func TestStringShift(t *testing.T) {
+	a := []string{"3", "4"}
+	b := []string{"1", "2", "3", "4"}
+
+	ss := StringSlice(a)
+	ss.Shift("1", "2")
+	if !ss.Same(b) {
+		t.Error("Get ", ss.Get(), ", should be ", b)
+	}
+
+	ss = StringSlice(a)
+	ss.Shift("2").Shift("1")
+	if !ss.Same(b) {
+		t.Error("Get ", ss.Get(), ", should be ", b)
+	}
+}
