@@ -106,16 +106,16 @@ func (ss *TypeStringSlice) Len() int {
 	return len(ss.Obj)
 }
 
-// Push push new elements into slice
+// Push push new elements into slice. Return new slice
 func (ss *TypeStringSlice) Push(elm string, more ...string) *TypeStringSlice {
-	ss.Obj = append(append(ss.Obj, elm), more...)
-	return ss
+	cp := append(append(append([]string{}, ss.Obj...), elm), more...)
+	return StringSlice(cp)
 }
 
-// Shift shift elements into slice
+// Shift shift elements into slice. Return new slice
 func (ss *TypeStringSlice) Shift(elm string, more ...string) *TypeStringSlice {
-	ss.Obj = append(append([]string{elm}, more...), ss.Obj...)
-	return ss
+	cp := append(append([]string{elm}, more...), ss.Obj...)
+	return StringSlice(cp)
 }
 
 // Empty is empty slice or not
