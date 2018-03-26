@@ -35,65 +35,58 @@ func (ss *TypeStringSlice) ElmAt(i int) *TypeString {
 
 // ElmTrim trim all elements in slice
 func (ss *TypeStringSlice) ElmTrim(cutset string) *TypeStringSlice {
-	result := ss.Copy()
-	for i, elm := range result.Obj {
-		result.Obj[i] = String(elm).Trim(cutset).Get()
+	for i, elm := range ss.Obj {
+		ss.Obj[i] = String(elm).Trim(cutset).Get()
 	}
-	return result
+	return ss
 }
 
 // ElmTrimLeft trim all elements in slice
 func (ss *TypeStringSlice) ElmTrimLeft(cutset string) *TypeStringSlice {
-	result := ss.Copy()
-	for i, elm := range result.Obj {
-		result.Obj[i] = String(elm).TrimLeft(cutset).Get()
+	for i, elm := range ss.Obj {
+		ss.Obj[i] = String(elm).TrimLeft(cutset).Get()
 	}
-	return result
+	return ss
 }
 
 // ElmTrimRight trim all elements in slice
 func (ss *TypeStringSlice) ElmTrimRight(cutset string) *TypeStringSlice {
-	result := ss.Copy()
-	for i, elm := range result.Obj {
-		result.Obj[i] = String(elm).TrimRight(cutset).Get()
+	for i, elm := range ss.Obj {
+		ss.Obj[i] = String(elm).TrimRight(cutset).Get()
 	}
-	return result
+	return ss
 }
 
 // ElmTrimPrefix trim all elements in slice
 func (ss *TypeStringSlice) ElmTrimPrefix(prefix string) *TypeStringSlice {
-	result := ss.Copy()
-	for i, elm := range result.Obj {
-		result.Obj[i] = String(elm).TrimPrefix(prefix).Get()
+	for i, elm := range ss.Obj {
+		ss.Obj[i] = String(elm).TrimPrefix(prefix).Get()
 	}
-	return result
+	return ss
 }
 
 // ElmTrimSuffix trim all elements in slice
 func (ss *TypeStringSlice) ElmTrimSuffix(suffix string) *TypeStringSlice {
-	result := ss.Copy()
-	for i, elm := range result.Obj {
-		result.Obj[i] = String(elm).TrimSuffix(suffix).Get()
+	for i, elm := range ss.Obj {
+		ss.Obj[i] = String(elm).TrimSuffix(suffix).Get()
 	}
-	return result
+	return ss
 }
 
 // ElmTrimSpace trim space all elements in slice
 func (ss *TypeStringSlice) ElmTrimSpace() *TypeStringSlice {
-	result := ss.Copy()
-	for i, elm := range result.Obj {
-		result.Obj[i] = String(elm).TrimSpace().Get()
+	for i, elm := range ss.Obj {
+		ss.Obj[i] = String(elm).TrimSpace().Get()
 	}
-	return result
+	return ss
 }
 
 // ElmWrapBy wrap all elements in slice
 func (ss *TypeStringSlice) ElmWrapBy(wrapper string) *TypeStringSlice {
-	result := ss.Copy()
-	for i, elm := range result.Obj {
-		result.Obj[i] = String(elm).WrapBy(wrapper).Get()
+	for i, elm := range ss.Obj {
+		ss.Obj[i] = String(elm).WrapBy(wrapper).Get()
 	}
-	return result
+	return ss
 }
 
 // Get return object slice
@@ -108,14 +101,16 @@ func (ss *TypeStringSlice) Len() int {
 
 // Push push new elements into slice. Return new slice
 func (ss *TypeStringSlice) Push(elm string, more ...string) *TypeStringSlice {
-	cp := append(append(append([]string{}, ss.Obj...), elm), more...)
-	return StringSlice(cp)
+	// cp := append(append(append([]string{}, ss.Obj...), elm), more...)
+	ss.Obj = append(append(ss.Obj, elm), more...)
+	return ss
 }
 
 // Shift shift elements into slice. Return new slice
 func (ss *TypeStringSlice) Shift(elm string, more ...string) *TypeStringSlice {
-	cp := append(append([]string{elm}, more...), ss.Obj...)
-	return StringSlice(cp)
+	// cp := append(append([]string{elm}, more...), ss.Obj...)
+	ss.Obj = append(append([]string{elm}, more...), ss.Obj...)
+	return ss
 }
 
 // Empty is empty slice or not

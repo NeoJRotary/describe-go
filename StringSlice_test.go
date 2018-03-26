@@ -123,3 +123,17 @@ func TestStringShift(t *testing.T) {
 		t.Error("Get ", ss.Get(), ", should be ", b)
 	}
 }
+
+func BenchmarkNativeAppend(b *testing.B) {
+	a := []string{}
+	for i := 0; i < b.N; i++ {
+		a = append(a, "1")
+	}
+}
+
+func BenchmarkStringSlicePush(b *testing.B) {
+	a := StringSlice(nil)
+	for i := 0; i < b.N; i++ {
+		a = a.Push("1")
+	}
+}
