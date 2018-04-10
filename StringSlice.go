@@ -102,6 +102,7 @@ func (ss *TypeStringSlice) Len() int {
 // Push push new elements into slice. Return new slice
 func (ss *TypeStringSlice) Push(elm string, more ...string) *TypeStringSlice {
 	// cp := append(append(append([]string{}, ss.Obj...), elm), more...)
+	// return StringSlice(cp)
 	ss.Obj = append(append(ss.Obj, elm), more...)
 	return ss
 }

@@ -46,12 +46,12 @@ func (s *TypeString) HasSuffix(suffix string) bool {
 
 // Replace wrapper of strings.Replace()
 func (s *TypeString) Replace(old string, new string, n int) *TypeString {
-	return s.Copy().Update(strings.Replace(s.Obj, old, new, n))
+	return s.Update(strings.Replace(s.Obj, old, new, n))
 }
 
 // ReplaceAll wrapper of strings.Replace(), set n = -1
 func (s *TypeString) ReplaceAll(old string, new string) *TypeString {
-	return s.Copy().Update(strings.Replace(s.Obj, old, new, -1))
+	return s.Update(strings.Replace(s.Obj, old, new, -1))
 }
 
 // SetInto set element into target slice by index. Panic if element doesn't have index.
@@ -85,32 +85,32 @@ func (s *TypeString) Split(sep string) *TypeStringSlice {
 
 // Trim wrapper of strings.Trim()
 func (s *TypeString) Trim(cutset string) *TypeString {
-	return s.Copy().Update(strings.Trim(s.Obj, cutset))
+	return s.Update(strings.Trim(s.Obj, cutset))
 }
 
 // TrimLeft wrapper of strings.TrimLeft()
 func (s *TypeString) TrimLeft(cutset string) *TypeString {
-	return s.Copy().Update(strings.TrimLeft(s.Obj, cutset))
+	return s.Update(strings.TrimLeft(s.Obj, cutset))
 }
 
 // TrimRight wrapper of strings.TrimRight()
 func (s *TypeString) TrimRight(cutset string) *TypeString {
-	return s.Copy().Update(strings.TrimRight(s.Obj, cutset))
+	return s.Update(strings.TrimRight(s.Obj, cutset))
 }
 
 // TrimPrefix wrapper of strings.TrimPrefix()
 func (s *TypeString) TrimPrefix(prefix string) *TypeString {
-	return s.Copy().Update(strings.TrimPrefix(s.Obj, prefix))
+	return s.Update(strings.TrimPrefix(s.Obj, prefix))
 }
 
 // TrimSuffix wrapper of strings.TrimSuffix()
 func (s *TypeString) TrimSuffix(suffix string) *TypeString {
-	return s.Copy().Update(strings.TrimSuffix(s.Obj, suffix))
+	return s.Update(strings.TrimSuffix(s.Obj, suffix))
 }
 
 // TrimSpace wrapper of strings.TrimSpace()
 func (s *TypeString) TrimSpace() *TypeString {
-	return s.Copy().Update(strings.TrimSpace(s.Obj))
+	return s.Update(strings.TrimSpace(s.Obj))
 }
 
 // Empty is empty string
@@ -129,7 +129,7 @@ func (s *TypeString) Range(i int, j int) *TypeString {
 	if j > s.Len() {
 		PanicErr(ErrOutOfRange)
 	}
-	return s.Copy().Update(s.Obj[i:j])
+	return s.Update(s.Obj[i:j])
 }
 
 // RangeBetween get part of object by given first and last element. Return empty element if not found.
@@ -148,5 +148,5 @@ func (s *TypeString) RangeBetween(a, b string) *TypeString {
 
 // WrapBy wrap string by wrapper
 func (s *TypeString) WrapBy(wrapper string) *TypeString {
-	return s.Copy().Update(wrapper + s.Obj + wrapper)
+	return s.Update(wrapper + s.Obj + wrapper)
 }

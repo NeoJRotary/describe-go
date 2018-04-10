@@ -124,16 +124,23 @@ func TestStringShift(t *testing.T) {
 	}
 }
 
-func BenchmarkNativeAppend(b *testing.B) {
+func BenchmarkStringSlice_NativeAppend(b *testing.B) {
 	a := []string{}
 	for i := 0; i < b.N; i++ {
-		a = append(a, "1")
+		a = append(a, "1", "2", "3")
 	}
 }
 
-func BenchmarkStringSlicePush(b *testing.B) {
+func BenchmarkStringSlice_Push(b *testing.B) {
 	a := StringSlice(nil)
 	for i := 0; i < b.N; i++ {
-		a = a.Push("1")
+		a = a.Push("1", "2", "3")
+	}
+}
+
+func BenchmarkStringSlice_PushWithCopy(b *testing.B) {
+	a := StringSlice(nil)
+	for i := 0; i < b.N; i++ {
+		a = a.Copy().Push("1", "2", "3")
 	}
 }
