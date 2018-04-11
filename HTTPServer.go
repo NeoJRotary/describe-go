@@ -1,6 +1,9 @@
 package describe
 
-import "net/http"
+import (
+	"net/http"
+	"strings"
+)
 
 // TypeHTTPServer http server function collections struct
 type TypeHTTPServer struct {
@@ -104,7 +107,7 @@ func (hs *TypeHTTPServer) handle(w http.ResponseWriter, r *http.Request) {
 	}
 
 	for _, hr := range hs.routes {
-		if hr.Path == r.URL.Path {
+		if strings.HasPrefix(r.URL.Path, hr.Path) {
 			f, ok := hr.handleMethod[r.Method]
 			if !ok {
 				w.WriteHeader(http.StatusMethodNotAllowed)

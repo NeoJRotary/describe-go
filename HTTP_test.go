@@ -22,6 +22,8 @@ func TestHTTP_Basic(t *testing.T) {
 	)
 	go server.Start()
 	time.Sleep(time.Second)
+
+	// test basic
 	res, err := HTTP().GET().AtURL(":12345/test").SetQuery("qq", "A").Do()
 	if IsErr(err) {
 		t.Fatal(err)
@@ -30,12 +32,23 @@ func TestHTTP_Basic(t *testing.T) {
 	if body != "getA" {
 		t.Fatal("wrong res, get:", body)
 	}
+
+	// test method not allowed
 	res, err = HTTP().POST().AtURL(":12345/test").Do()
 	if IsErr(err) {
 		t.Fatal(err)
 	}
 	if res.StatusCode != http.StatusMethodNotAllowed {
 		t.Fatal("wrong status, get:", res.StatusCode)
+	}
+
+	// test route
+	res, err = HTTP().GET().AtURL(":12345/test/ggg").Do()
+	if IsErr(err) {
+		t.Fatal(err)
+	}
+	if res.StatusCode == http.StatusNotFound {
+		t.Fatal("wrong status, should found")
 	}
 }
 
