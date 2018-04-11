@@ -14,6 +14,7 @@ type TypeHTTP struct {
 	URL        string
 	Query      TypeHTTPKVMap
 	StatusCode int
+	RoutePath  string
 	Request    *http.Request
 	Response   *http.Response
 	W          http.ResponseWriter
@@ -36,13 +37,13 @@ func (m TypeHTTPKVMap) Set(key, value string) {
 	m[key] = value
 }
 
-func converNativeRequest(r *http.Request) *TypeHTTP {
+func converRequestToTypeHTTP(r *http.Request) *TypeHTTP {
 	defer r.Body.Close()
 	h := TypeHTTP{
-		Method: r.Method,
-		URL:    r.URL.Path,
-		Header: map[string]string{},
-		Query:  map[string]string{},
+		Method:  r.Method,
+		Header:  map[string]string{},
+		Query:   map[string]string{},
+		Request: r,
 	}
 	b, err := ioutil.ReadAll(r.Body)
 	if !IsErr(err) {
@@ -108,6 +109,18 @@ func (h *TypeHTTP) DELETE() *TypeHTTP {
 // PATCH setup method PATCH
 func (h *TypeHTTP) PATCH() *TypeHTTP {
 	h.Method = "PATCH"
+	return h
+}
+
+// OPTIONS setup method OPTIONS
+func (h *TypeHTTP) OPTIONS() *TypeHTTP {
+	h.Method = "OPTIONS"
+	return h
+}
+
+// HEAD setup method HEAD
+func (h *TypeHTTP) HEAD() *TypeHTTP {
+	h.Method = "HEAD"
 	return h
 }
 
@@ -209,4 +222,10 @@ func (h *TypeHTTP) Do() (typeH *TypeHTTP, err error) {
 func (h *TypeHTTP) SetStatus(code int) *TypeHTTP {
 	h.StatusCode = code
 	return h
+}
+
+// RelativePath get relative path from route path without prefix "/"
+func (h *TypeHTTP) RelativePath() string {
+	base := String(h.RoutePath).TrimPrefix("/").Get()
+	return String(h.Request.URL.Path).TrimPrefix("/").TrimPrefix(base).TrimPrefix("/").Get()
 }

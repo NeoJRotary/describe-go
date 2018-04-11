@@ -38,3 +38,23 @@ func TestHTTP_Basic(t *testing.T) {
 		t.Fatal("wrong status, get:", res.StatusCode)
 	}
 }
+
+func TestHTTP_CORS(t *testing.T) {
+	server := HTTPServer().ListenOn(":12345").AllowOrigin("localhost").EnableCORS()
+	go server.Start()
+	time.Sleep(time.Second)
+	res, err := HTTP().POST().AtURL(":12345").SetHeader("Origin", "localhost").Do()
+	if IsErr(err) {
+		t.Fatal(err)
+	}
+	if res.StatusCode != 404 {
+		t.Fatal("CORS shouldn't reject")
+	}
+	res, err = HTTP().GET().AtURL(":12345").SetHeader("Origin", "google.com").Do()
+	if IsErr(err) {
+		t.Fatal(err)
+	}
+	if res.StatusCode != 403 {
+		t.Fatal("CORS should reject")
+	}
+}

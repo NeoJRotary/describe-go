@@ -4,13 +4,18 @@ import "net/http"
 
 // TypeHTTPServer http server function collections struct
 type TypeHTTPServer struct {
-	ServeMux   *http.ServeMux
-	corsOrigin *TypeStringSlice
-	corsMethod *TypeStringSlice
-	corsHeader *TypeStringSlice
-	Addr       string
-	routes     []*TypeHTTPRoute
+	ServeMux    *http.ServeMux
+	corsHandler TypeHTTPCORSHandler
+	corsOrigin  *TypeStringSlice
+	corsMethod  *TypeStringSlice
+	corsHeader  *TypeStringSlice
+	corsEnable  bool
+	Addr        string
+	routes      []*TypeHTTPRoute
 }
+
+// TypeHTTPCORSHandler http CORS handler
+type TypeHTTPCORSHandler func(defaultResult bool, r *http.Request) bool
 
 // TypeHTTPRoute http server route function collections struct
 type TypeHTTPRoute struct {
@@ -38,29 +43,83 @@ func (hs *TypeHTTPServer) ListenOn(addr string) *TypeHTTPServer {
 	return hs
 }
 
-// AllowOrigin CORS allow origins
+// AllowOrigin server level CORS allow origins
 func (hs *TypeHTTPServer) AllowOrigin(host string, more ...string) *TypeHTTPServer {
 	hs.corsOrigin.Push(host, more...)
 	return hs
 }
 
-// AllowMethod CORS allow method
+// AllowMethod server level CORS allow method
 func (hs *TypeHTTPServer) AllowMethod(method string, more ...string) *TypeHTTPServer {
 	hs.corsMethod.Push(method, more...)
 	return hs
 }
 
-// AllowHeader CORS allow header
+// AllowHeader server level CORS allow header
 func (hs *TypeHTTPServer) AllowHeader(header string, more ...string) *TypeHTTPServer {
 	hs.corsHeader.Push(header, more...)
 	return hs
 }
 
+// EnableCORS enable server level CORS response
+func (hs *TypeHTTPServer) EnableCORS() *TypeHTTPServer {
+	hs.corsEnable = true
+	return hs
+}
+
+// SetCORSHandler setup your CORS handler
+func (hs *TypeHTTPServer) SetCORSHandler(f TypeHTTPCORSHandler) *TypeHTTPServer {
+	hs.corsHandler = f
+	return hs
+}
+
+func (hs *TypeHTTPServer) corsCheck(r *http.Request) bool {
+	result := true
+	result = result && hs.corsOrigin.Has(r.Header.Get("Origin"))
+
+	if hs.corsHandler != nil {
+		return hs.corsHandler(result, r)
+	}
+	return result
+}
+
+func (hs *TypeHTTPServer) handle(w http.ResponseWriter, r *http.Request) {
+	if hs.corsEnable {
+		if !hs.corsMethod.Empty() {
+			w.Header().Set("Access-Control-Allow-Methods", hs.corsMethod.Join(",").Get())
+		}
+		if !hs.corsHeader.Empty() {
+			w.Header().Set("Access-Control-Allow-Headers", hs.corsHeader.Join(",").Get())
+		}
+
+		if hs.corsCheck(r) {
+			w.Header().Set("Access-Control-Allow-Origin", r.Header.Get("Origin"))
+		} else {
+			w.Header().Set("Access-Control-Allow-Origin", "")
+			if r.Method != http.MethodOptions {
+				w.WriteHeader(http.StatusForbidden)
+			}
+			return
+		}
+	}
+
+	for _, hr := range hs.routes {
+		if hr.Path == r.URL.Path {
+			f, ok := hr.handleMethod[r.Method]
+			if !ok {
+				w.WriteHeader(http.StatusMethodNotAllowed)
+				return
+			}
+			f(w, r)
+			return
+		}
+	}
+	w.WriteHeader(http.StatusNotFound)
+}
+
 // Start start server listening
 func (hs *TypeHTTPServer) Start() error {
-	for _, hr := range hs.routes {
-		hs.ServeMux.HandleFunc(hr.Path, hr.handler)
-	}
+	hs.ServeMux.HandleFunc("/", hs.handle)
 	return http.ListenAndServe(hs.Addr, hs.ServeMux)
 }
 
@@ -74,39 +133,42 @@ func (hs *TypeHTTPServer) Route(path string) *TypeHTTPRoute {
 	return hr
 }
 
-func convertHTTPHandlerFunc(f TypeHTTPHandlerFunc) http.HandlerFunc {
+// convertHTTPHandlerFunc
+func (hr *TypeHTTPRoute) convertHTTPHandlerFunc(f TypeHTTPHandlerFunc) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
-		f(w, converNativeRequest(r))
+		h := converRequestToTypeHTTP(r)
+		h.RoutePath = hr.Path
+		f(w, h)
 	}
 }
 
 // GET handle GET at this route
 func (hr *TypeHTTPRoute) GET(f TypeHTTPHandlerFunc) *TypeHTTPRoute {
-	hr.handleMethod["GET"] = convertHTTPHandlerFunc(f)
+	hr.handleMethod["GET"] = hr.convertHTTPHandlerFunc(f)
 	return hr
 }
 
 // POST handle POST at this route
 func (hr *TypeHTTPRoute) POST(f TypeHTTPHandlerFunc) *TypeHTTPRoute {
-	hr.handleMethod["POST"] = convertHTTPHandlerFunc(f)
+	hr.handleMethod["POST"] = hr.convertHTTPHandlerFunc(f)
 	return hr
 }
 
 // PUT handle PUT at this route
 func (hr *TypeHTTPRoute) PUT(f TypeHTTPHandlerFunc) *TypeHTTPRoute {
-	hr.handleMethod["PUT"] = convertHTTPHandlerFunc(f)
+	hr.handleMethod["PUT"] = hr.convertHTTPHandlerFunc(f)
 	return hr
 }
 
 // PATCH handle PATCH at this route
 func (hr *TypeHTTPRoute) PATCH(f TypeHTTPHandlerFunc) *TypeHTTPRoute {
-	hr.handleMethod["PATCH"] = convertHTTPHandlerFunc(f)
+	hr.handleMethod["PATCH"] = hr.convertHTTPHandlerFunc(f)
 	return hr
 }
 
 // DELETE handle DELETE at this route
 func (hr *TypeHTTPRoute) DELETE(f TypeHTTPHandlerFunc) *TypeHTTPRoute {
-	hr.handleMethod["DELETE"] = convertHTTPHandlerFunc(f)
+	hr.handleMethod["DELETE"] = hr.convertHTTPHandlerFunc(f)
 	return hr
 }
 
@@ -115,12 +177,3 @@ func (hr *TypeHTTPRoute) DELETE(f TypeHTTPHandlerFunc) *TypeHTTPRoute {
 // 	hr.handleMethod["OPTIONS"] = f
 // 	return hr
 // }
-
-func (hr *TypeHTTPRoute) handler(w http.ResponseWriter, r *http.Request) {
-	f, ok := hr.handleMethod[r.Method]
-	if !ok {
-		w.WriteHeader(http.StatusMethodNotAllowed)
-	} else {
-		f(w, r)
-	}
-}
