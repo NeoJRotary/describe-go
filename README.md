@@ -1,12 +1,31 @@
 # Describe-Go
-
 Describe your scripts at golang
 
+## Intro
+- reusable object
+- set first, use later
+
 `go get github.com/NeoJRotary/describe-go`
+
+Current Version : 0.1.3   
 
 GoDoc : [Doc](https://godoc.org/github.com/NeoJRotary/describe-go)  
 
 Some issuses : [ISSUES](https://github.com/NeoJRotary/describe-go/blob/master/ISSUES.md)  
+
+## Progess
+| Type | Progess |
+| --- | --- |
+| String | beta |
+| StringSlice | beta |
+| Byte | scheduled |
+| ByteSlice | scheduled |
+| Error | beta |
+| File | util only |
+| JSON | util only |
+| Time | util only |
+| HTTP | alpha |
+| HTTPServer | for test only |
 
 Example:
 ```
