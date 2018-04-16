@@ -20,6 +20,15 @@ type TypeHTTP struct {
 	W          http.ResponseWriter
 }
 
+// TypeHTTPInput TypeHTTPInput
+type TypeHTTPInput struct {
+	Method string
+	URL    string
+	Header map[string]string
+	Query  map[string]string
+	Body   []byte
+}
+
 // TypeHTTPKVMap TypeHTTP Key-Value Map
 type TypeHTTPKVMap map[string]string
 
@@ -59,12 +68,23 @@ func converRequestToTypeHTTP(r *http.Request) *TypeHTTP {
 	return &h
 }
 
-// HTTP get *TypeHTTP
-func HTTP() *TypeHTTP {
-	return &TypeHTTP{
-		Header: map[string]string{},
-		Query:  map[string]string{},
+// HTTP get *TypeHTTP, can be inited by TypeHTTPInput
+func HTTP(input ...TypeHTTPInput) *TypeHTTP {
+	h := TypeHTTP{}
+	if len(input) != 0 {
+		h.Method = input[0].Method
+		h.AtURL(input[0].URL)
+		h.Body = input[0].Body
+		h.Header = input[0].Header
+		h.Query = input[0].Query
 	}
+	if h.Header == nil {
+		h.Header = map[string]string{}
+	}
+	if h.Query == nil {
+		h.Query = map[string]string{}
+	}
+	return &h
 }
 
 // Copy get copy of *TypeHTTP

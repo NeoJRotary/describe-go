@@ -23,12 +23,28 @@ func TestHTTP_Basic(t *testing.T) {
 	go server.Start()
 	time.Sleep(time.Second)
 
-	// test basic
+	// test basic by function
 	res, err := HTTP().GET().AtURL(":12345/test").SetQuery("qq", "A").Do()
 	if IsErr(err) {
 		t.Fatal(err)
 	}
 	body := string(res.Body)
+	if body != "getA" {
+		t.Fatal("wrong res, get:", body)
+	}
+
+	// test basic by input
+	res, err = HTTP(TypeHTTPInput{
+		Method: "GET",
+		URL:    ":12345/test",
+		Query: map[string]string{
+			"qq": "A",
+		},
+	}).Do()
+	if IsErr(err) {
+		t.Fatal(err)
+	}
+	body = string(res.Body)
 	if body != "getA" {
 		t.Fatal("wrong res, get:", body)
 	}
