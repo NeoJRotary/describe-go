@@ -34,6 +34,32 @@ func (s *TypeString) Len() int {
 	return len(s.Obj)
 }
 
+// Has obejct string contain all elements
+func (s *TypeString) Has(elm string, more ...string) bool {
+	if s.Index(elm) == -1 {
+		return false
+	}
+	for _, elmS := range more {
+		if s.Index(elmS) == -1 {
+			return false
+		}
+	}
+	return true
+}
+
+// HasOne obejct string contain one of elements
+func (s *TypeString) HasOne(elm string, more ...string) bool {
+	if s.Index(elm) != -1 {
+		return true
+	}
+	for _, elmS := range more {
+		if s.Index(elmS) != -1 {
+			return true
+		}
+	}
+	return false
+}
+
 // HasPrefix wrapper of strings.HasPrefix()
 func (s *TypeString) HasPrefix(prefix string) bool {
 	return strings.HasPrefix(s.Obj, prefix)
