@@ -27,7 +27,7 @@ func NewErr(msg ...interface{}) error {
 func RecoverErr(f func(error)) {
 	if r := recover(); r != nil {
 		e, is := r.(error)
-		if is {
+		if !is {
 			panic(r)
 		}
 		if f != nil {

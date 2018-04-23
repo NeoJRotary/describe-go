@@ -12,3 +12,16 @@ func TestGetENV(t *testing.T) {
 		t.Error("should get default")
 	}
 }
+
+func TestRecoverErr(t *testing.T) {
+	count := 0
+	func() {
+		defer RecoverErr(func(error) {
+			count++
+		})
+		panic(NewErr(123))
+	}()
+	if count != 1 {
+		t.Fatal("should run recover func")
+	}
+}
