@@ -11,6 +11,8 @@ type TypeStringSlice struct {
 func StringSlice(obj []string) *TypeStringSlice {
 	if obj == nil {
 		obj = []string{}
+	} else {
+		obj = append([]string{}, obj...)
 	}
 	return &TypeStringSlice{Obj: obj}
 }

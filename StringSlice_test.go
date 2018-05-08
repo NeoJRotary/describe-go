@@ -86,6 +86,7 @@ func TestStringSliceTrimSpace(t *testing.T) {
 func TestStringSliceElm(t *testing.T) {
 	a := []string{"121", "131"}
 	b := []string{"2", "3"}
+
 	if ss := StringSlice(a).ElmTrim("1"); !ss.Same(b) {
 		t.Error("Get ", ss.Get(), ", should be ", b)
 	}
