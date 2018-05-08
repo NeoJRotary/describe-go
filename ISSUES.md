@@ -11,4 +11,4 @@ BenchmarkStringSlice_NativeAppend-4      5000000               308 ns/op
 BenchmarkStringSlice_Push-4              5000000               301 ns/op
 BenchmarkStringSlice_PushWithCopy-4        10000            192625 ns/op
 ```
-For consistency function behavior, I decide to prevent Copy at every return.
+For consistency function behavior, pure type always return copy and slice always update itself.

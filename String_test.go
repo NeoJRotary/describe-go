@@ -5,14 +5,14 @@ import (
 	"testing"
 )
 
-func TestStringUpdate(t *testing.T) {
+func TestString_Update(t *testing.T) {
 	// Update
 	if String("qwe").SetSliceIndex(2).Update("ggg").SliceIndex != 2 {
 		t.Error("Update should return same pointer")
 	}
 }
 
-func TestStringRange(t *testing.T) {
+func TestString_Range(t *testing.T) {
 	s := String("qwwertyuiooooo")
 	if result := s.Range(1, 4).Get(); result != "wwe" {
 		t.Error("get", result, "should be", "wwe")
@@ -20,6 +20,14 @@ func TestStringRange(t *testing.T) {
 
 	if result := s.RangeBetween("ww", "i").Get(); result != "ertyu" {
 		t.Error("get", result, "should be", "ertyu")
+	}
+
+	if result := s.RangeFirst(3).Get(); result != "qww" {
+		t.Error("get", result, "should be", "qww")
+	}
+
+	if result := s.RangeLast(6).Get(); result != "iooooo" {
+		t.Error("get", result, "should be", "iooooo")
 	}
 }
 
