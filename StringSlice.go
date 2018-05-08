@@ -239,6 +239,31 @@ func (ss *TypeStringSlice) FindHasSuffix(suffix string) *TypeString {
 	return nil
 }
 
+// FilterBy get new slice of string which pass the func
+func (ss *TypeStringSlice) FilterBy(filter func(*TypeString) bool) *TypeStringSlice {
+	newSS := StringSlice(nil)
+	for _, v := range ss.Obj {
+		if filter(String(v)) {
+			newSS.Push(v)
+		}
+	}
+	return newSS
+}
+
+// FilterByPrefix get new slice of string which has prefix
+func (ss *TypeStringSlice) FilterByPrefix(prefix string) *TypeStringSlice {
+	return ss.FilterBy(func(s *TypeString) bool {
+		return s.HasPrefix(prefix)
+	})
+}
+
+// FilterBySuffix get new slice of string which has prefix
+func (ss *TypeStringSlice) FilterBySuffix(suffix string) *TypeStringSlice {
+	return ss.FilterBy(func(s *TypeString) bool {
+		return s.HasSuffix(suffix)
+	})
+}
+
 // Last return last element of slice in describe.Type. Panic if slice is empty.
 func (ss *TypeStringSlice) Last() *TypeString {
 	if ss.Empty() {
@@ -262,10 +287,10 @@ func (ss *TypeStringSlice) Join(sep string) *TypeString {
 }
 
 // Map update elements by func, return a new slice
-func (ss *TypeStringSlice) Map(fc func(*TypeString) *TypeString) *TypeStringSlice {
+func (ss *TypeStringSlice) Map(mapper func(*TypeString) *TypeString) *TypeStringSlice {
 	cp := ss.Copy()
 	for i, v := range cp.Obj {
-		cp.Obj[i] = fc(String(v)).Get()
+		cp.Obj[i] = mapper(String(v)).Get()
 	}
 	return cp
 }

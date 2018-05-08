@@ -1,6 +1,8 @@
 package describe
 
 import (
+	"strconv"
+	"strings"
 	"testing"
 )
 
@@ -142,5 +144,47 @@ func BenchmarkStringSlice_PushWithCopy(b *testing.B) {
 	a := StringSlice(nil)
 	for i := 0; i < b.N; i++ {
 		a = a.Copy().Push("1", "2", "3")
+	}
+}
+
+func BenchmarkStringSlice_FilterWithNativeString(b *testing.B) {
+	longSlice := []string{}
+	for i := 0; i < 10000; i++ {
+		longSlice = append(longSlice, strconv.Itoa(i))
+	}
+
+	filter := func(s string) bool {
+		return strings.HasSuffix(s, "34")
+	}
+
+	b.ResetTimer()
+	for i := 0; i < b.N; i++ {
+		newss := []string{}
+		for _, s := range longSlice {
+			if filter(s) {
+				newss = append(newss, s)
+			}
+		}
+	}
+}
+
+func BenchmarkStringSlice_FilterWithTypeString(b *testing.B) {
+	longSlice := []string{}
+	for i := 0; i < 10000; i++ {
+		longSlice = append(longSlice, strconv.Itoa(i))
+	}
+
+	filter := func(s *TypeString) bool {
+		return s.HasSuffix("34")
+	}
+
+	b.ResetTimer()
+	for i := 0; i < b.N; i++ {
+		newss := StringSlice(nil)
+		for _, s := range longSlice {
+			if filter(String(s)) {
+				newss.Push(s)
+			}
+		}
 	}
 }
