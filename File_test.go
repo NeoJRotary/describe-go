@@ -3,7 +3,7 @@ package describe
 import "testing"
 
 func TestFileExist(t *testing.T) {
-	if !FileExist("./file.go") {
+	if !FileExist("./File_test.go") {
 		t.Error("should exist")
 	}
 

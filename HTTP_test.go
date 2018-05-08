@@ -7,7 +7,7 @@ import (
 )
 
 func TestHTTP_Basic(t *testing.T) {
-	server := HTTPServer().ListenOn(":12345")
+	server := HTTPServer().ListenOn(":10000")
 	server.Route("/test").GET(
 		func(w http.ResponseWriter, h *TypeHTTP) {
 			switch h.GetQuery("qq") {
@@ -24,7 +24,7 @@ func TestHTTP_Basic(t *testing.T) {
 	time.Sleep(time.Second)
 
 	// test basic by function
-	res, err := HTTP().GET().AtURL(":12345/test").SetQuery("qq", "A").Do()
+	res, err := HTTP().GET().AtURL(":10000/test").SetQuery("qq", "A").Do()
 	if IsErr(err) {
 		t.Fatal(err)
 	}
@@ -36,7 +36,7 @@ func TestHTTP_Basic(t *testing.T) {
 	// test basic by input
 	res, err = HTTP(TypeHTTPInput{
 		Method: "GET",
-		URL:    ":12345/test",
+		URL:    ":10000/test",
 		Query: map[string]string{
 			"qq": "A",
 		},
@@ -50,7 +50,7 @@ func TestHTTP_Basic(t *testing.T) {
 	}
 
 	// test method not allowed
-	res, err = HTTP().POST().AtURL(":12345/test").Do()
+	res, err = HTTP().POST().AtURL(":10000/test").Do()
 	if IsErr(err) {
 		t.Fatal(err)
 	}
@@ -59,7 +59,7 @@ func TestHTTP_Basic(t *testing.T) {
 	}
 
 	// test route
-	res, err = HTTP().GET().AtURL(":12345/test/ggg").Do()
+	res, err = HTTP().GET().AtURL(":10000/test/ggg").Do()
 	if IsErr(err) {
 		t.Fatal(err)
 	}
@@ -69,17 +69,17 @@ func TestHTTP_Basic(t *testing.T) {
 }
 
 func TestHTTP_CORS(t *testing.T) {
-	server := HTTPServer().ListenOn(":12345").AllowOrigin("localhost").EnableCORS()
+	server := HTTPServer().ListenOn(":10001").AllowOrigin("localhost").EnableCORS()
 	go server.Start()
 	time.Sleep(time.Second)
-	res, err := HTTP().POST().AtURL(":12345").SetHeader("Origin", "localhost").Do()
+	res, err := HTTP().POST().AtURL(":10001").SetHeader("Origin", "localhost").Do()
 	if IsErr(err) {
 		t.Fatal(err)
 	}
 	if res.StatusCode != 404 {
 		t.Fatal("CORS shouldn't reject")
 	}
-	res, err = HTTP().GET().AtURL(":12345").SetHeader("Origin", "google.com").Do()
+	res, err = HTTP().GET().AtURL(":10001").SetHeader("Origin", "google.com").Do()
 	if IsErr(err) {
 		t.Fatal(err)
 	}
