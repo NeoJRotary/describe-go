@@ -175,6 +175,11 @@ func (s *TypeString) RangeBetween(a, b string) *TypeString {
 	return s.Range(i, j)
 }
 
+// RangeCut get part of obejct by cut (n) chars from start and (m) chars from end
+func (s *TypeString) RangeCut(n, m int) *TypeString {
+	return s.Range(n, s.Len()-m)
+}
+
 // RangeFirst get first n chars
 func (s *TypeString) RangeFirst(n int) *TypeString {
 	return s.Range(0, n)

@@ -22,6 +22,10 @@ func TestString_Range(t *testing.T) {
 		t.Error("get", result, "should be", "ertyu")
 	}
 
+	if result := s.RangeCut(3, 5).Get(); result != "ertyui" {
+		t.Error("get", result, "should be", "ertyui")
+	}
+
 	if result := s.RangeFirst(3).Get(); result != "qww" {
 		t.Error("get", result, "should be", "qww")
 	}
