@@ -1,6 +1,8 @@
 package describe
 
-import "errors"
+import (
+	"errors"
+)
 
 // TypeError error function collections struct
 type TypeError struct {
@@ -22,14 +24,14 @@ func (e *TypeError) Get() error {
 	return e.Obj
 }
 
-// Msg return object error message string
+// Msg return object error message in string
 func (e *TypeError) Msg() string {
 	return e.Obj.Error()
 }
 
-// ToString return object error message to TypeString
-func (e *TypeError) ToString() *TypeString {
-	return String(e.Obj.Error())
+// ToTypeString return object error message in TypeString
+func (e *TypeError) ToTypeString() *TypeString {
+	return String(e.Msg())
 }
 
 // Is whether object is an error
@@ -49,7 +51,12 @@ func (e *TypeError) Check() {
 	}
 }
 
-// Prefix prefix msg to object error
-func (e *TypeError) Prefix(s string) *TypeError {
-	return ErrorMsg(s + e.Msg())
+// AddPrefix add prefix msg to object error
+func (e *TypeError) AddPrefix(prefix string) *TypeError {
+	return ErrorMsg(prefix + e.Msg())
+}
+
+// AddSuffix add suffix msg to object error
+func (e *TypeError) AddSuffix(suffix string) *TypeError {
+	return ErrorMsg(e.Msg() + suffix)
 }

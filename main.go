@@ -20,7 +20,11 @@ func CheckErr(e error) {
 
 // NewErr return new error
 func NewErr(msg ...interface{}) error {
-	return errors.New(fmt.Sprint(msg))
+	ss := StringSlice(nil)
+	for _, s := range msg {
+		ss.Push(fmt.Sprint(s))
+	}
+	return errors.New(ss.Join(" ").Get())
 }
 
 // RecoverErr run function when recover an error, it will panic again if it is not error
