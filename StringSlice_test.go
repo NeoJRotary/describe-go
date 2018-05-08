@@ -100,7 +100,7 @@ func TestStringSliceElm(t *testing.T) {
 	}
 }
 
-func TestStringPush(t *testing.T) {
+func TestStringSlicePush(t *testing.T) {
 	a := []string{"2", "3"}
 	b := []string{"2", "3", "4", "5"}
 
@@ -113,7 +113,7 @@ func TestStringPush(t *testing.T) {
 	}
 }
 
-func TestStringShift(t *testing.T) {
+func TestStringSliceShift(t *testing.T) {
 	a := []string{"3", "4"}
 	b := []string{"1", "2", "3", "4"}
 
@@ -123,6 +123,27 @@ func TestStringShift(t *testing.T) {
 
 	if ss := StringSlice(a).Shift("2").Shift("1"); !ss.Same(b) {
 		t.Error("Get ", ss.Get(), ", should be ", b)
+	}
+}
+
+func TestStringSliceFilter(t *testing.T) {
+	a := []string{"11", "12", "13", "14", "15", "21", "22"}
+
+	ss := StringSlice(a).FilterBy(func(s *TypeString) bool {
+		return s.ToInt() < 15
+	})
+	if ss.Len() != 4 {
+		t.Error("wrong len")
+	}
+
+	ss = StringSlice(a).FilterByPrefix("1")
+	if ss.Len() != 5 {
+		t.Error("wrong len")
+	}
+
+	ss = StringSlice(a).FilterBySuffix("3")
+	if ss.Len() != 1 {
+		t.Error("wrong len")
 	}
 }
 
