@@ -1,6 +1,9 @@
 package describe
 
-import "strings"
+import (
+	"strconv"
+	"strings"
+)
 
 // TypeString string function collections struct
 type TypeString struct {
@@ -175,4 +178,84 @@ func (s *TypeString) RangeBetween(a, b string) *TypeString {
 // WrapBy wrap string by wrapper
 func (s *TypeString) WrapBy(wrapper string) *TypeString {
 	return s.Update(wrapper + s.Obj + wrapper)
+}
+
+// ToInt convert string to int. Panic if strconv throw error.
+func (s *TypeString) ToInt() int {
+	return int(s.ToInt32())
+}
+
+// ToInt8 convert string to int8. Panic if strconv throw error.
+func (s *TypeString) ToInt8() int8 {
+	i, e := strconv.ParseInt(s.Obj, 10, 8)
+	CheckErr(e)
+	return int8(i)
+}
+
+// ToInt16 convert string to int16. Panic if strconv throw error.
+func (s *TypeString) ToInt16() int16 {
+	i, e := strconv.ParseInt(s.Obj, 10, 16)
+	CheckErr(e)
+	return int16(i)
+}
+
+// ToInt32 convert string to int32. Panic if strconv throw error.
+func (s *TypeString) ToInt32() int32 {
+	i, e := strconv.ParseInt(s.Obj, 10, 32)
+	CheckErr(e)
+	return int32(i)
+}
+
+// ToInt64 convert string to int64. Panic if strconv throw error.
+func (s *TypeString) ToInt64() int64 {
+	i, e := strconv.ParseInt(s.Obj, 10, 64)
+	CheckErr(e)
+	return i
+}
+
+// ToUint convert string to uint. Panic if strconv throw error.
+func (s *TypeString) ToUint() uint {
+	return uint(s.ToUint32())
+}
+
+// ToUint8 convert string to uint8. Panic if strconv throw error.
+func (s *TypeString) ToUint8() uint8 {
+	i, e := strconv.ParseUint(s.Obj, 10, 8)
+	CheckErr(e)
+	return uint8(i)
+}
+
+// ToUint16 convert string to uint16. Panic if strconv throw error.
+func (s *TypeString) ToUint16() uint16 {
+	i, e := strconv.ParseUint(s.Obj, 10, 16)
+	CheckErr(e)
+	return uint16(i)
+}
+
+// ToUint32 convert string to uint32. Panic if strconv throw error.
+func (s *TypeString) ToUint32() uint32 {
+	i, e := strconv.ParseUint(s.Obj, 10, 32)
+	CheckErr(e)
+	return uint32(i)
+}
+
+// ToUint64 convert string to uint64. Panic if strconv throw error.
+func (s *TypeString) ToUint64() uint64 {
+	i, e := strconv.ParseUint(s.Obj, 10, 64)
+	CheckErr(e)
+	return i
+}
+
+// ToFloat32 convert string to float32. Panic if strconv throw error.
+func (s *TypeString) ToFloat32() float32 {
+	i, e := strconv.ParseFloat(s.Obj, 32)
+	CheckErr(e)
+	return float32(i)
+}
+
+// ToFloat64 convert string to float64. Panic if strconv throw error.
+func (s *TypeString) ToFloat64() float64 {
+	i, e := strconv.ParseFloat(s.Obj, 64)
+	CheckErr(e)
+	return i
 }
