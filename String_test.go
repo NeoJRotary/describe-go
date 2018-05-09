@@ -14,23 +14,23 @@ func TestString_Update(t *testing.T) {
 
 func TestString_Range(t *testing.T) {
 	s := String("qwwertyuiooooo")
-	if result := s.Range(1, 4).Get(); result != "wwe" {
+	if result := s.Copy().Range(1, 4).Get(); result != "wwe" {
 		t.Error("get", result, "should be", "wwe")
 	}
 
-	if result := s.RangeBetween("ww", "i").Get(); result != "ertyu" {
+	if result := s.Copy().RangeBetween("ww", "i").Get(); result != "ertyu" {
 		t.Error("get", result, "should be", "ertyu")
 	}
 
-	if result := s.RangeCut(3, 5).Get(); result != "ertyui" {
+	if result := s.Copy().RangeCut(3, 5).Get(); result != "ertyui" {
 		t.Error("get", result, "should be", "ertyui")
 	}
 
-	if result := s.RangeFirst(3).Get(); result != "qww" {
+	if result := s.Copy().RangeFirst(3).Get(); result != "qww" {
 		t.Error("get", result, "should be", "qww")
 	}
 
-	if result := s.RangeLast(6).Get(); result != "iooooo" {
+	if result := s.Copy().RangeLast(6).Get(); result != "iooooo" {
 		t.Error("get", result, "should be", "iooooo")
 	}
 }
