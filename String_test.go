@@ -35,6 +35,24 @@ func TestString_Range(t *testing.T) {
 	}
 }
 
+func TestString_Trim(t *testing.T) {
+	if s := String("112311").Trim("1").Get(); s != "23" {
+		t.Error("trim get ", s)
+	}
+	if s := String("112311").TrimLeft("1").Get(); s != "2311" {
+		t.Error("trim get ", s)
+	}
+	if s := String("112311").TrimRight("1").Get(); s != "1123" {
+		t.Error("trim get ", s)
+	}
+	if s := String("112311").TrimPrefix("11").Get(); s != "2311" {
+		t.Error("trim get ", s)
+	}
+	if s := String("112311").TrimSuffix("11").Get(); s != "1123" {
+		t.Error("trim get ", s)
+	}
+}
+
 func BenchmarkString_NativeReplaceAll(b *testing.B) {
 	for i := 0; i < b.N; i++ {
 		strings.Replace("asdrdfewf333gobsddlfdfewf333nefokndedodfewf333knd", "dfewf333", "", -1)
