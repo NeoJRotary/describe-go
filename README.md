@@ -20,16 +20,16 @@ Some issuses : [ISSUES](https://github.com/NeoJRotary/describe-go/blob/master/IS
 - util_only : currently only have few util functions
 - planned : plan to do, designing
 
-| Type | Progess | Path |
-| --- | --- | --- |
-| String | beta | `describe-go` |
-| StringSlice | beta | `describe-go` |
-| Error | beta | `describe-go` |
-| HTTP / Server | alpha | `describe-go/dhttp` |
-| Net | util_only | `describe-go` |
-| File | util_only | `describe-go` |
-| JSON | util_only | `describe-go` |
-| Time | util_only | `describe-go` |
+| Type | Progess | Path | Doc |
+| --- | --- | --- | --- |
+| String | beta | `describe-go` | [Doc](https://godoc.org/github.com/NeoJRotary/describe-go) |
+| StringSlice | beta | `describe-go` | [Doc](https://godoc.org/github.com/NeoJRotary/describe-go) |
+| Error | beta | `describe-go` | [Doc](https://godoc.org/github.com/NeoJRotary/describe-go) |
+| HTTP / Server | alpha | `describe-go/dhttp` | [Doc](https://github.com/NeoJRotary/describe-go/tree/master/dhttp) |
+| Net | util_only | `describe-go` | [Doc](https://godoc.org/github.com/NeoJRotary/describe-go) |
+| File | util_only | `describe-go` | [Doc](https://godoc.org/github.com/NeoJRotary/describe-go) |
+| JSON | util_only | `describe-go` | [Doc](https://godoc.org/github.com/NeoJRotary/describe-go) |
+| Time | util_only | `describe-go` | [Doc](https://godoc.org/github.com/NeoJRotary/describe-go) |
 | Byte | planned | |
 | ByteSlice | planned | |
 
