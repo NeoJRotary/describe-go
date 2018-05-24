@@ -9,8 +9,6 @@ Describe your scripts at golang
 
 Current Version : 0.2.0      
 
-GoDoc : [Doc](https://godoc.org/github.com/NeoJRotary/describe-go)  
-
 Some issuses : [ISSUES](https://github.com/NeoJRotary/describe-go/blob/master/ISSUES.md)  
 
 ## Progess
@@ -20,12 +18,12 @@ Some issuses : [ISSUES](https://github.com/NeoJRotary/describe-go/blob/master/IS
 - util_only : currently only have few util functions
 - planned : plan to do, designing
 
-| Type | Progess | Path | Doc |
+| Type | Progess | Path | GoDoc |
 | --- | --- | --- | --- |
 | String | beta | `describe-go` | [Doc](https://godoc.org/github.com/NeoJRotary/describe-go) |
 | StringSlice | beta | `describe-go` | [Doc](https://godoc.org/github.com/NeoJRotary/describe-go) |
 | Error | beta | `describe-go` | [Doc](https://godoc.org/github.com/NeoJRotary/describe-go) |
-| HTTP / Server | alpha | `describe-go/dhttp` | [Doc](https://github.com/NeoJRotary/describe-go/tree/master/dhttp) |
+| HTTP / Server | alpha | `describe-go/dhttp` | [Doc](https://godoc.org/github.com/NeoJRotary/describe-go/dhttp) |
 | Net | util_only | `describe-go` | [Doc](https://godoc.org/github.com/NeoJRotary/describe-go) |
 | File | util_only | `describe-go` | [Doc](https://godoc.org/github.com/NeoJRotary/describe-go) |
 | JSON | util_only | `describe-go` | [Doc](https://godoc.org/github.com/NeoJRotary/describe-go) |
