@@ -19,3 +19,8 @@ func (r *Request) GetRemoteIP() net.IP {
 	}
 	return net.ParseIP(remoteIP)
 }
+
+// SetMiddlewareValue set middleware value
+func (r *Request) SetMiddlewareValue(name string, value interface{}) {
+	r.MiddlewareValues[name] = value
+}

@@ -20,12 +20,11 @@ func TestAccess_GetIP(t *testing.T) {
 		t.Error("should get RemoteAddr")
 	}
 
-	// r.MiddlewareValues["RealIP"] = nil
 	if getIP(r, Config{UseRealIP: true}).String() != "1.1.1.1" {
 		t.Error("should get RemoteAddr")
 	}
 
-	r.MiddlewareValues["RealIP"] = net.ParseIP("2.2.2.2")
+	r.SetMiddlewareValue("RealIP", net.ParseIP("2.2.2.2"))
 	if getIP(r, Config{UseRealIP: true}).String() != "2.2.2.2" {
 		t.Error("should get RealIP")
 	}
