@@ -7,19 +7,19 @@ import (
 // Config auth middleware config
 type Config struct {
 	AutoReject bool
-	Validater  Validater
+	Validator  Validator
 }
 
-// Validater do auth
-type Validater func(w *dhttp.ResponseWriter, r *dhttp.Request) bool
+// Validator do auth
+type Validator func(w *dhttp.ResponseWriter, r *dhttp.Request) bool
 
 // Middleware to do authentication before handling request
-func Middleware(autoReject bool, v Validater) *dhttp.Middleware {
+func Middleware(autoReject bool, v Validator) *dhttp.Middleware {
 	mw := &dhttp.Middleware{
 		Name: "Auth",
 		Config: Config{
 			AutoReject: autoReject,
-			Validater:  v,
+			Validator:  v,
 		},
 		Handler: handler,
 	}
@@ -30,7 +30,7 @@ func Middleware(autoReject bool, v Validater) *dhttp.Middleware {
 // handler Middleware Auth Handler
 func handler(w *dhttp.ResponseWriter, r *dhttp.Request, config interface{}) interface{} {
 	conf := config.(Config)
-	result := conf.Validater(w, r)
+	result := conf.Validator(w, r)
 
 	if conf.AutoReject && !result {
 		w.WriteHeader(401)
