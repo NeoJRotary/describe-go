@@ -19,7 +19,7 @@ func TestRealIP(t *testing.T) {
 	req := newReq()
 	conf := Config{
 		AutoReject: false,
-		Validater: func(w *dhttp.ResponseWriter, r *dhttp.Request) bool {
+		Validator: func(w *dhttp.ResponseWriter, r *dhttp.Request) bool {
 			return r.Header.Get("token") == "1234567890"
 		},
 	}
