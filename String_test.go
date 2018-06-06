@@ -33,6 +33,14 @@ func TestString_Range(t *testing.T) {
 	if result := s.Copy().RangeLast(6).Get(); result != "iooooo" {
 		t.Error("get", result, "should be", "iooooo")
 	}
+
+	if result := s.Copy().RangeFrom("tyu").Get(); result != "iooooo" {
+		t.Error("get", result, "should be", "iooooo")
+	}
+
+	if result := s.Copy().RangeUntil("tyu").Get(); result != "qwwer" {
+		t.Error("get", result, "should be", "qwwer")
+	}
 }
 
 func TestString_Trim(t *testing.T) {

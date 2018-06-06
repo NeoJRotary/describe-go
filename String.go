@@ -190,6 +190,24 @@ func (s *TypeString) RangeLast(n int) *TypeString {
 	return s.Range(s.Len()-n, s.Len())
 }
 
+// RangeFrom get part of string from index of sub (exclude sub)
+func (s *TypeString) RangeFrom(sub string) *TypeString {
+	i := s.Index(sub)
+	if i == -1 {
+		return s.Update("")
+	}
+	return s.Range(i+len(sub), s.Len())
+}
+
+// RangeUntil get part of string until index of sub (exclude sub)
+func (s *TypeString) RangeUntil(sub string) *TypeString {
+	i := s.Index(sub)
+	if i == -1 {
+		return s.Update("")
+	}
+	return s.Range(0, i)
+}
+
 // WrapBy wrap string by wrapper
 func (s *TypeString) WrapBy(wrapper string) *TypeString {
 	return s.Update(wrapper + s.Obj + wrapper)
