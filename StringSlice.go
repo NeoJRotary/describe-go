@@ -8,13 +8,13 @@ type TypeStringSlice struct {
 }
 
 // StringSlice get *TypeStringSlice
-func StringSlice(obj []string) *TypeStringSlice {
-	if obj == nil {
-		obj = []string{}
-	} else {
-		obj = append([]string{}, obj...)
+func StringSlice(obj ...[]string) *TypeStringSlice {
+	if len(obj) > 0 {
+		if obj[0] != nil {
+			return &TypeStringSlice{Obj: obj[0]}
+		}
 	}
-	return &TypeStringSlice{Obj: obj}
+	return &TypeStringSlice{Obj: []string{}}
 }
 
 // Copy get copy of type

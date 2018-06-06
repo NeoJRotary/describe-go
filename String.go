@@ -12,8 +12,11 @@ type TypeString struct {
 }
 
 // String get *TypeString
-func String(obj string) *TypeString {
-	return &TypeString{Obj: obj, SliceIndex: -1}
+func String(obj ...string) *TypeString {
+	if len(obj) > 0 {
+		return &TypeString{Obj: obj[0], SliceIndex: -1}
+	}
+	return &TypeString{Obj: "", SliceIndex: -1}
 }
 
 // Copy get copy of type
