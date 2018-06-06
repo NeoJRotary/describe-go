@@ -1,14 +1,27 @@
 package dhttp
 
 import (
+	"io/ioutil"
 	"net"
 	"net/http"
+
+	D "github.com/NeoJRotary/describe-go"
 )
 
 // Request inheritance of http.Request
 type Request struct {
 	*http.Request
 	MiddlewareValues map[string]interface{}
+}
+
+// ReadAllBody read all body in []byte
+func (r *Request) ReadAllBody() []byte {
+	defer r.Body.Close()
+	b, err := ioutil.ReadAll(r.Body)
+	if D.IsErr(err) {
+		return nil
+	}
+	return b
 }
 
 // GetRemoteIP get net.IP from Request.RemoteAddr

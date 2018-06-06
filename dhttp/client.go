@@ -52,8 +52,12 @@ func Client(input ...TypeClient) *TypeClient {
 		c.Request.Method = init.Method
 		c.SetURL(init.URL)
 		c.SetContentType(init.ContentType)
-		c.SetBody(init.Body)
-		c.SetBodyReader(init.BodyReader)
+		if init.Body != nil {
+			c.SetBody(init.Body)
+		}
+		if init.BodyReader != nil {
+			c.SetBodyReader(init.BodyReader)
+		}
 
 		for k, v := range init.Header {
 			c.SetHeader(k, v)
@@ -196,6 +200,7 @@ func (c *TypeClient) Do() (*Response, error) {
 	client := &http.Client{
 		Timeout: c.Timeout,
 	}
+
 	res, err := client.Do(c.Request)
 	if D.IsErr(err) {
 		return nil, err

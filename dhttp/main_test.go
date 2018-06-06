@@ -99,5 +99,33 @@ func TestDHTTP_Method(t *testing.T) {
 	if res.StatusCode != 404 {
 		t.Fatal("should be 404")
 	}
+}
 
+func TestDHTTP_ClientInput(t *testing.T) {
+	server := Server().ListenOn("localhost:10004")
+	route := server.Route("/test")
+	route.POST(func(w *ResponseWriter, r *Request) {
+		b := r.ReadAllBody()
+		if string(b) != "123" {
+			w.WriteHeader(400)
+		} else {
+			w.WriteHeader(200)
+		}
+	})
+	go server.Start()
+
+	res, e := Client(TypeClient{
+		Method:  "POST",
+		Body:    []byte("123"),
+		URL:     "http://localhost:10004/test",
+		Timeout: time.Second,
+	}).Do()
+
+	if e != nil {
+		t.Fatal(e)
+	}
+
+	if res.StatusCode != 200 {
+		t.Fatal("should get 200")
+	}
 }
