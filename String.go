@@ -53,6 +53,11 @@ func (s *TypeString) Has(elm string, more ...string) bool {
 	return true
 }
 
+// NotHave object string doesn't contain all elements
+func (s *TypeString) NotHave(elm string, more ...string) bool {
+	return !s.Has(elm, more...)
+}
+
 // HasOne obejct string contain one of elements
 func (s *TypeString) HasOne(elm string, more ...string) bool {
 	if s.Index(elm) != -1 {
