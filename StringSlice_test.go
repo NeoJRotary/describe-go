@@ -18,12 +18,48 @@ func TestStringSliceSame(t *testing.T) {
 }
 
 func TestStringSliceHas(t *testing.T) {
-	a := []string{"1", "2", "3"}
-	if !StringSlice(a).Has("1") {
+	ss := StringSlice([]string{"1", "2", "3", "4", "5", "6"})
+
+	// test all in slice
+	if !ss.Has("1", "3") {
 		t.Error("should be true")
 	}
-	if StringSlice(a).Has("fjf") {
+	if ss.NotHave("1", "3") {
 		t.Error("should be false")
+	}
+	if !ss.Include("1", "3") {
+		t.Error("should be true")
+	}
+	if ss.NotInclude("1", "3") {
+		t.Error("should be false")
+	}
+
+	// test some in slice
+	if ss.Has("1", "3", "9") {
+		t.Error("should be false")
+	}
+	if !ss.NotHave("1", "3", "9") {
+		t.Error("should be true")
+	}
+	if !ss.Include("1", "3", "9") {
+		t.Error("should be true")
+	}
+	if ss.NotInclude("1", "3", "9") {
+		t.Error("should be false")
+	}
+
+	// test none in slice
+	if ss.Has("8", "9") {
+		t.Error("should be false")
+	}
+	if !ss.NotHave("8", "9") {
+		t.Error("should be true")
+	}
+	if ss.Include("8", "9") {
+		t.Error("should be false")
+	}
+	if !ss.NotInclude("8", "9") {
+		t.Error("should be true")
 	}
 }
 

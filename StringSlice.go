@@ -195,19 +195,39 @@ func (ss *TypeStringSlice) Same(target []string) bool {
 	return true
 }
 
-// Has whether it has element
-func (ss *TypeStringSlice) Has(elm string) bool {
-	for _, v := range ss.Obj {
-		if v == elm {
-			return true
+// Has whether slice has all elements
+func (ss *TypeStringSlice) Has(elms ...string) bool {
+	for _, elm := range elms {
+		has := false
+		for _, v := range ss.Obj {
+			if v == elm {
+				has = true
+				break
+			}
+		}
+		if !has {
+			return false
 		}
 	}
-	return false
+	return true
 }
 
-// NotHave whether it has element
-func (ss *TypeStringSlice) NotHave(elm string) bool {
-	return !ss.Has(elm)
+// NotHave whether slice doesn't have any of elements
+func (ss *TypeStringSlice) NotHave(elms ...string) bool {
+	// for _, elm := range elms {
+	// 	notHave := true
+	// 	for _, v := range ss.Obj {
+	// 		if v == elm {
+	// 			notHave = false
+	// 			break
+	// 		}
+	// 	}
+	// 	if !notHave {
+	// 		return false
+	// 	}
+	// }
+	// return true
+	return !ss.Has(elms...)
 }
 
 // First return first element of slice in describe.Type. Panic if slice is empty.
@@ -323,4 +343,19 @@ func (ss *TypeStringSlice) DeleteSame(s ...string) *TypeStringSlice {
 		}
 	}
 	return ss
+}
+
+// Include return if slice has one of elements
+func (ss *TypeStringSlice) Include(elms ...string) bool {
+	for _, elm := range elms {
+		if ss.Has(elm) {
+			return true
+		}
+	}
+	return false
+}
+
+// NotInclude return if slice does not include any of elements
+func (ss *TypeStringSlice) NotInclude(elms ...string) bool {
+	return !ss.Include(elms...)
 }
