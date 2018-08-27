@@ -316,12 +316,9 @@ func (ss *TypeStringSlice) Delete(i int) *TypeStringSlice {
 }
 
 // DeleteSame delete elm same with s
-func (ss *TypeStringSlice) DeleteSame(s string, more ...string) *TypeStringSlice {
-	if i := ss.IndexOf(s); i != -1 {
-		ss.Delete(i)
-	}
-	for _, s := range more {
-		if i := ss.IndexOf(s); i != -1 {
+func (ss *TypeStringSlice) DeleteSame(s ...string) *TypeStringSlice {
+	for _, v := range s {
+		if i := ss.IndexOf(v); i != -1 {
 			ss.Delete(i)
 		}
 	}
