@@ -24,6 +24,16 @@ func (ss *TypeStringSlice) Copy() *TypeStringSlice {
 	return &TypeStringSlice{Obj: newSlice}
 }
 
+// IndexOf get index of s, return -1 if not found
+func (ss *TypeStringSlice) IndexOf(s string) int {
+	for i, v := range ss.Obj {
+		if v == s {
+			return i
+		}
+	}
+	return -1
+}
+
 // ElmAt return element of slice at position in describe.Type. Panic if slice is empty or out of range.
 func (ss *TypeStringSlice) ElmAt(i int) *TypeString {
 	if ss.Empty() {
@@ -295,4 +305,25 @@ func (ss *TypeStringSlice) Map(mapper func(*TypeString) *TypeString) *TypeString
 		cp.Obj[i] = mapper(String(v)).Get()
 	}
 	return cp
+}
+
+// Delete delete elm at i
+func (ss *TypeStringSlice) Delete(i int) *TypeStringSlice {
+	if i < ss.Len() {
+		ss.Obj = append(ss.Obj[:i], ss.Obj[i+1:]...)
+	}
+	return ss
+}
+
+// DeleteSame delete elm same with s
+func (ss *TypeStringSlice) DeleteSame(s string, more ...string) *TypeStringSlice {
+	if i := ss.IndexOf(s); i != -1 {
+		ss.Delete(i)
+	}
+	for _, s := range more {
+		if i := ss.IndexOf(s); i != -1 {
+			ss.Delete(i)
+		}
+	}
+	return ss
 }

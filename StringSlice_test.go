@@ -148,6 +148,28 @@ func TestStringSliceFilter(t *testing.T) {
 	}
 }
 
+func TestStringSliceDelete(t *testing.T) {
+	ss := StringSlice([]string{"0", "1", "2", "3", "4"})
+
+	if i := ss.IndexOf("1"); i != 1 {
+		t.Error("wrong index", i)
+	}
+
+	if i := ss.IndexOf("9"); i != -1 {
+		t.Error("wrong index", i)
+	}
+
+	ss.Delete(1)
+	if s := ss.ElmAt(1).Get(); s != "2" {
+		t.Error("delete error, get", s)
+	}
+
+	ss.DeleteSame("0", "4")
+	if !ss.Same([]string{"2", "3"}) {
+		t.Error("DeleteSame error, get", ss.Get())
+	}
+}
+
 func BenchmarkStringSlice_NativeAppend(b *testing.B) {
 	a := []string{}
 	for i := 0; i < b.N; i++ {
